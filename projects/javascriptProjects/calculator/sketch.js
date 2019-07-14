@@ -21,175 +21,224 @@ var enterButton;
 
 var back;
 
+var scale;
+
 
 
 function setup() {
   createCanvas(windowWidth,windowHeight );
+  scale = 8;
 
   
+
+    
+    
+
+    numButtons.push(button);
+
+    button = createButton("1");
+    button.position(numPos[0],numPos[1])
+    button.mousePressed(one)
+   
+    
+    button.size(windowWidth/scale,windowHeight/scale)
+    numPos[0]+=windowWidth/scale;
+    numButtons.push(button);
+
+
+
+    button = createButton("2");
+    button.position(numPos[0],numPos[1])
+    button.mousePressed(two)
+    
+    
+    button.size(windowWidth/scale,windowHeight/scale)
+    numPos[0]+=windowWidth/scale;
+    numButtons.push(button);
+
+
+    button = createButton("3");
+    button.position(numPos[0],numPos[1])
+    button.mousePressed(three)
+    button.size(windowWidth/scale,windowHeight/scale)
+    numButtons.push(button);
+    numPos[0]+=windowWidth/scale;
+
+
+    plusButton = createButton("+");
+    plusButton.position(numPos[0],numPos[1])
+    plusButton.mousePressed(plus);
+    plusButton.size(windowWidth/scale,windowHeight/scale)
+    numPos[0]+=windowWidth/scale;
+
+
+
+
+    back = createButton("<=");
+    back.position(numPos[0],numPos[1])
+    back.mousePressed(del);
+    back.size(windowWidth/scale,windowHeight/scale)
+
+
+    numPos[0] = 100;
+    numPos[1]+=windowHeight/scale;
+    
+
+
+
+
+    button = createButton("4");
+    button.position(numPos[0],numPos[1])
+    button.mousePressed(four)
+    numPos[0]+=windowWidth/scale;
+
+
+    button.size(windowWidth/scale,windowHeight/scale)
+    
+    numButtons.push(button);
+
+
+
+
+    button = createButton("5");
+    button.position(numPos[0],numPos[1])
+    button.mousePressed(five)
+
+
+    button.size(windowWidth/scale,windowHeight/scale)
+    numPos[0]+=windowWidth/scale;
+    numButtons.push(button);
+
+
+
+
+
+
+    button = createButton("6");
+    button.position(numPos[0],numPos[1])
+    button.mousePressed(six)
+    button.size(windowWidth/scale,windowHeight/scale)
+    numButtons.push(button);
+    numPos[0]+=windowWidth/scale;
+
+
+    minusButton = createButton("-");
+    minusButton.position(numPos[0],numPos[1])
+    minusButton.mousePressed(minus);
+    minusButton.size(windowWidth/scale,windowHeight/scale)
+
+
+
+    numPos[0] = 100;
+    numPos[1]+=windowHeight/scale;
+    
+    
+
+
+
+
+
+    button = createButton("7");
+    button.position(numPos[0],numPos[1])
+    button.mousePressed(seven)
+    
+
+    button.size(windowWidth/scale,windowHeight/scale)
+    
+
+    numPos[0]+=windowWidth/scale;
+    numButtons.push(button);
+
+
+
+
+    button = createButton("8");
+    button.position(numPos[0],numPos[1])
+    button.mousePressed(eight)
+    
+
+    button.size(windowWidth/scale,windowHeight/scale)
+    numPos[0]+=windowWidth/scale; 
+    numButtons.push(button);
+
+
+
+    button = createButton("9");
+    button.position(numPos[0],numPos[1])
+    numPos[0]+=windowWidth/scale; 
+    button.mousePressed(nine)
+
+
+
+    multiplyButton = createButton("*");
+    multiplyButton.position(numPos[0],numPos[1])
+    multiplyButton.mousePressed(multiply);
+    multiplyButton.size(windowWidth/scale,windowHeight/scale)
+
+    numPos[0] = 100;
+    numPos[1]+=windowHeight/scale;
+    
+    
+
+    button.size(windowWidth/scale,windowHeight/scale)
+    
+    numButtons.push(button);
+
 
     button = createButton("0");
     button.position(numPos[0],numPos[1])
     button.mousePressed(zero)
-    button.size(40,40)
+    button.size(windowWidth/scale,windowHeight/scale)
+    numPos[0]+=windowWidth/scale;
     numButtons.push(button);
-    numPos[0]+=100;
-    if(numPos[0]>300)
-    {
-      numPos[0]=100;
-      numPos[1]+=100;
-    }
-    button = createButton("1");
-    button.position(numPos[0],numPos[1])
-    button.mousePressed(one)
-    button.size(40,40)
-    numButtons.push(button);
-    numPos[0]+=100;
-    if(numPos[0]>300)
-    {
-      numPos[0]=100;
-      numPos[1]+=100;
-    }
-    button = createButton("2");
-    button.position(numPos[0],numPos[1])
-    button.mousePressed(two)
-    button.size(40,40)
-    numButtons.push(button);
-    numPos[0]+=100;
-    if(numPos[0]>300)
-    {
-      numPos[0]=100;
-      numPos[1]+=100;
-    }
-    button = createButton("3");
-    button.position(numPos[0],numPos[1])
-    button.mousePressed(three)
-    button.size(40,40)
-    numButtons.push(button);
-    numPos[0]+=100;
-    if(numPos[0]>300)
-    {
-      numPos[0]=100;
-      numPos[1]+=100;
-    }
-    button = createButton("4");
-    button.position(numPos[0],numPos[1])
-    button.mousePressed(four)
-    button.size(40,40)
-    numButtons.push(button);
-    numPos[0]+=100;
-    if(numPos[0]>300)
-    {
-      numPos[0]=100;
-      numPos[1]+=100;
-    }
-    button = createButton("5");
-    button.position(numPos[0],numPos[1])
-    button.mousePressed(five)
-    button.size(40,40)
-    numButtons.push(button);
-    numPos[0]+=100;
-    if(numPos[0]>300)
-    {
-      numPos[0]=100;
-      numPos[1]+=100;
-    }
-    button = createButton("6");
-    button.position(numPos[0],numPos[1])
-    button.mousePressed(six)
-    button.size(40,40)
-    numButtons.push(button);
-    numPos[0]+=100;
-    if(numPos[0]>300)
-    {
-      numPos[0]=100;
-      numPos[1]+=100;
-    }
-    button = createButton("7");
-    button.position(numPos[0],numPos[1])
-    button.mousePressed(seven)
-    button.size(40,40)
-    numButtons.push(button);
-    numPos[0]+=100;
-    if(numPos[0]>300)
-    {
-      numPos[0]=100;
-      numPos[1]+=100;
-    }
-    button = createButton("8");
-    button.position(numPos[0],numPos[1])
-    button.mousePressed(eight)
-    button.size(40,40)
-    numButtons.push(button);
-    numPos[0]+=100;
-    if(numPos[0]>300)
-    {
-      numPos[0]=100;
-      numPos[1]+=100;
-    }
-    button = createButton("9");
-    button.position(numPos[0],numPos[1])
-    button.mousePressed(nine)
-    button.size(40,40)
-    numButtons.push(button);
-    numPos[0]+=100;
-    if(numPos[0]>300)
-    {
-      numPos[0]=100;
-      numPos[1]+=100;
-    }
+
+
+
     button = createButton(".");
     button.position(numPos[0],numPos[1])
     button.mousePressed(decimal)
-    button.size(40,40)
+    button.size(windowWidth/scale,windowHeight/scale)
+    numPos[0]+=windowWidth/scale;
     numButtons.push(button);
 
-    numPos[0]+=100;
-    if(numPos[0]>300)
-    {
-      numPos[0]=100;
-      numPos[1]+=100;
-    }
+   
+
+    enterButton = createButton("=");
+    enterButton.position(numPos[0],numPos[1])
+    enterButton.mousePressed(calculate);
+    enterButton.size(windowWidth/scale,windowHeight/scale)
+
+    numPos[0]+=windowWidth/scale;
+
+    divideButton = createButton("/");
+    divideButton.position(numPos[0],numPos[1])
+    divideButton.mousePressed(divide);
+    divideButton.size(windowWidth/scale,windowHeight/scale)
+
+
+
+
+
 
   string = "";
 
   
 
-  back = createButton("<=");
-  back.position(500,200)
-  back.mousePressed(del);
-  back.size(40,40)
+  
+  
+ 
+  
+  
 
-  plusButton = createButton("+");
-  plusButton.position(opPos[0],opPos[1])
-  plusButton.mousePressed(plus);
-  plusButton.size(40,40)
-  opPos[1]+=100
-  minusButton = createButton("-");
-  minusButton.position(opPos[0],opPos[1])
-  minusButton.mousePressed(minus);
-  minusButton.size(40,40)
-  opPos[1]+=100
-  divideButton = createButton("/");
-  divideButton.position(opPos[0],opPos[1])
-  divideButton.mousePressed(divide);
-  divideButton.size(40,40)
-  opPos[1]+=100
-  multiplyButton = createButton("*");
-  multiplyButton.position(opPos[0],opPos[1])
-  multiplyButton.mousePressed(multiply);
-  multiplyButton.size(40,40)
-
-  enterButton = createButton("=");
-  enterButton.position(300,500)
-  enterButton.mousePressed(calculate);
-  enterButton.size(40,40)
+  
 
 
 }
 
 function calculate()
 {
+  
+
   var ans = 0;
   var nums = [""];
   var ops = [];
@@ -328,10 +377,11 @@ function multiply()
 
 function draw()
 {
+  createCanvas(windowWidth,windowHeight );
   background(0);
   fill("white ")
   rectMode(CORNERS);
-  rect(50,50,750,150)
+  rect(50,50,windowWidth-50,150)
 
   fill("black");
   textSize(30);

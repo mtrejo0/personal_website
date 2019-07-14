@@ -11,12 +11,13 @@ var score;
 
 function setup() {
   // put setup code here
- createCanvas(windowWidth-10,windowHeight-10);
- bird = new flap(300,windowHeight/2);
+ createCanvas(windowWidth,windowHeight);
+ bird = new flap(windowWidth/2,windowHeight/2);
  time = 0;
  game = true;
  start = false;
- score = 144;
+ score = 25;
+ noStroke();
 
 
 }
@@ -33,12 +34,23 @@ function keyPressed()
     start = true;
   }
 
+
+}
+function mousePressed()
+{
+
+    bird.vel.y=-10;
+  
+  if(!start)
+  {
+    start = true;
+  }
 }
 
 
 function draw() {
 
-
+  createCanvas(windowWidth,windowHeight);
   if(!start){
   background("cyan");
   bird.display();
@@ -47,7 +59,7 @@ function draw() {
     rect(windowWidth/2,windowHeight-20,windowWidth,100)
     fill("black");
     textSize(30);
-    text("Play Blappy Fird", windowWidth/2,windowHeight/2);
+    text("Play Blappy Fird", windowWidth/2-100,windowHeight/3);
 
   }
 
@@ -77,7 +89,7 @@ function draw() {
         pipes.splice(i,1);
         
       }
-      if(bird.bA.x>pipes[i].pos.x+pipes[i].size)
+      if(bird.bA.x>=pipes[i].pos.x+pipes[i].size && bird.bA.x<=pipes[i].pos.x+pipes[i].size*2)
       {
         score++;
       }
@@ -103,7 +115,7 @@ function draw() {
 
     fill("black");
     textSize(30);
-    text("Score: " + (score/145|0), 200,75);
+    text("Score: " + ((score/26|0)), windowWidth/6,75);
     
 
     if(!game)
@@ -114,8 +126,9 @@ function draw() {
       rect(windowWidth/2,windowHeight-20,windowWidth,100)
       fill("black");
       textSize(30);
-      text("Max Score: " + (score/145|0), windowWidth/2-100,windowHeight/2);
-      noLoop();
+      text("Max Score: " + (score/26|0), windowWidth/2-100,windowHeight/2);
+      noLoop()
+      
     }
     
   }
@@ -141,7 +154,7 @@ function flap(x,y)
   {
       this.vel.add(this.acc);
       this.pos.add(this.vel);
-
+  this.pos.x = windowWidth/2
   this.bA = createVector(this.pos.x-this.size/2, this.pos.y-this.size/2)
   this.bB = createVector(this.pos.x-this.size/2, this.pos.y+this.size/2)
   this.bC = createVector(this.pos.x+this.size/2, this.pos.y-this.size/2)

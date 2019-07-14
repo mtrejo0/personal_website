@@ -1,7 +1,7 @@
 
 var maze = [];
 var n = 50;
-var size = 10;
+var size;
 var originBFS = [100,100];
 var originDFS = [700,100];
 var adj = [];
@@ -12,14 +12,16 @@ var button;
 
 function setup() {
   
-  createCanvas(windowWidth-10,windowHeight-10);
+  createCanvas(windowWidth,windowHeight);
   if(button != null)
   {
     button.remove();
   }
+  size = 10;
   button = createButton("New Graph");
   button.position(10,10);
   button.mousePressed(setup);
+
   adj = [];
   maze = [];
 
@@ -91,6 +93,11 @@ function setup() {
 }
 
 function draw() {
+  createCanvas(windowWidth,windowHeight);
+  originBFS = [windowWidth/12,windowHeight/6];
+  originDFS = [windowWidth/2,windowHeight/6]
+
+  size = windowHeight*windowWidth/100000;
 
   
 
@@ -124,7 +131,7 @@ function draw() {
       {
         fill("black");
         textSize(30);
-        text("No Path Possible", 200,75);
+        text("No Path Possible", originBFS[0],originBFS[1]-20);
         
       }
       if(i == 0 && j == 0)
@@ -136,10 +143,10 @@ function draw() {
         color = "lime";
       }
       fill(color);
-      rect(x,y,10,10)
-      x= x+10;
+      rect(x,y,size,size)
+      x= x+size;
     }
-    y+=10;
+    y+=size;
     x = originBFS[0];
   }
 
@@ -173,7 +180,7 @@ function draw() {
       {
         fill("black");
         textSize(30);
-        text("No Path Possible", 800,75);
+        text("No Path Possible", originDFS[0],originDFS[1]-20);
         
       }
       if(i == 0 && j == 0)
@@ -186,17 +193,17 @@ function draw() {
       }
       
       fill(color);
-      rect(x,y,10,10)
-      x= x+10;
+      rect(x,y,size,size)
+      x= x+size;
     }
-    y+=10;
+    y+=size;
     x = originDFS[0];
   }
 
 fill("black");
   textSize(30);
-  text("BFS", 100,75);
-  text("DFS", 700,75);
+  text("BFS", originBFS[0],originBFS[1]-50);
+  text("DFS", originDFS[0],originDFS[1]-50);
 
 
   

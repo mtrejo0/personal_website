@@ -2,50 +2,70 @@ var racer;
 var objects = []
 var time;
 var positions =[];
+var drawingBox;
+var tempShape;
 function setup() {
   // put setup code here
  createCanvas(windowWidth-10,windowHeight-10);
  racer = new Rocket();
  time = 0;
- objects.push(new block([[windowWidth*2/3,-1000],[windowWidth,1000]]))
+ objects.push(new block([[0,windowHeight-50],[windowWidth,windowHeight]]))
+ objects.push(new block([[windowWidth-50,0],[windowWidth,windowHeight]]))
+ objects.push(new block([[0,0],[windowWidth,50]]))
+ objects.push(new block([[0,0],[50,windowHeight]]))
+ drawingBox = false;
+ 
 }
 
 function mousePressed()
 {
   startPoint = [mouseX,mouseY];
-  noLoop();
+  drawingBox = true;
+  tempShape = [mouseX,mouseY];
+  // noLoop();
 }
 function mouseReleased()
 {
   endPoint = [mouseX,mouseY];
 
-  objects.push(new block([startPoint,endPoint]) )
-  loop();
+  objects.push(new block([startPoint,endPoint]))
+  drawingBox = false;
+  // loop();
 }
 
 
 function draw() {
-
-
-
  
+  
+  
+  
+
   background("white")
-  racer.update();
-  racer.display();
-  if(time%10 == 0){
-  positions.push([racer.pos.x,racer.pos.y])}
+  
+  
+    if(time%10 == 0){
+    if(!drawingBox) positions.push([racer.pos.x,racer.pos.y])}
+    
+    for (var i = positions.length - 1; i >= 0; i--) {
+      fill("blue")
+      ellipse(positions[i][0],positions[i][1],10,10)
+    }
+    time++;
+    if(!drawingBox) racer.update();
+    racer.display();
+  
+
+  if(drawingBox)
+  {
+    fill("green")
+    rectMode(CORNERS)
+    rect(tempShape[0],tempShape[1],mouseX,mouseY);
+  } 
   for (var i = objects.length - 1; i >= 0; i--) {
 
-    objects[i].update()
-    objects[i].display()
-    
-  }
- 
-  for (var i = positions.length - 1; i >= 0; i--) {
-    fill("red")
-    ellipse(positions[i][0],positions[i][1],10,10)
-  }
-  time++;
+      objects[i].update()
+      objects[i].display()
+    }
   
   
 }
@@ -55,22 +75,22 @@ function draw() {
 
 function Rocket()
 {
-  this.pos = createVector(windowWidth/2+50,windowHeight-50);
-  this.vel = createVector(2,-2);
-  this.acc = createVector(0,0);
+  this.pos = createVector(windowWidth/2,windowHeight-250);
+  this.vel = createVector(1,0);
+  this.acc = [0,0];
+  
   this.color = "red"
   this.time = 0
   this.pError = 0;
-  this.kP = -1/4000;
-  this.kD = -1/9000
-  this.kI = -1/300000;
+  this.kP = -1/10000
+  this.kD = -1/100000
+  this.kI = -1/1000000
 
 
 
   this.bang = function()
   {
       d = this.avgDist();
-      console.log(d)
       velH = this.vel.heading()
       if(d<200)
       {
@@ -84,7 +104,8 @@ function Rocket()
   }
   this.PID = function()
   {
-      d = this.avgDist();
+      
+       d = this.avgDist(PI/2);
       error = 200-d;
       
 
@@ -95,16 +116,27 @@ function Rocket()
       I = this.kI/this.time*(error-this.pError)
       D = this.time*this.kD*(error-this.pError)
 
-      this.acc = createVector(cos(angle),sin(angle)).mult( P+I+D)
+      this.acc = [cos(angle)*( P+I+D),sin(angle)*( P+I+D)]
       this.pError = error;
   }
   
   this.update = function() {
       this.time ++;
-      this.vel.add(this.acc);
+      this.vel.x+=this.acc[0]
+      this.vel.y+=this.acc[1]
       this.pos.add(this.vel);
-      this.acc.mult(0);
-      this.vel.limit(2)
+      this.acc = [0,0]
+
+      if(this.time>800)
+      {
+        this.time  = 1;
+        this.pError = 0;
+      }
+
+      if(this.vel.mag()>1)
+      {
+        this.vel.mult(1/this.vel.mag())
+      }
 
 
       //this.vel.add(createVector(cos(this.vel.heading()),sin(this.vel.heading())))
@@ -113,7 +145,6 @@ function Rocket()
       if(this.pos.y<0)
       {
         this.pos.y = windowHeight-10
-        //positions = []
       }
       
         this.PID()
@@ -131,16 +162,21 @@ function Rocket()
         {
           noLoop()
         }
+        if(this.pos.x > objects[j].points[0][0] && this.pos.x < objects[j].points[1][0] && 
+          this.pos.y < objects[j].points[0][1] && this.pos.y > objects[j].points[1][1])
+        {
+         noLoop()
+        
+        }
+        if(this.pos.x > objects[j].points[1][0] && this.pos.x < objects[j].points[0][0] && 
+          this.pos.y < objects[j].points[1][1] && this.pos.y > objects[j].points[0][1])
+        {
+          noLoop()
+        }
+
+
       }
       
-
-
-
-
-
-      
-
-           
   };
 
   this.avgDist = function(){
@@ -174,26 +210,41 @@ function Rocket()
     var dist = 0;
     var hit = false
     var curr = createVector(this.pos.x,this.pos.y);
-    while(!hit && dist < 300)
-    {
-      
+    while(!hit)
+    { 
+      point(curr.x,curr.y)
+      curr.x = curr.x+cos(this.vel.heading()+angle)*5
+      curr.y = curr.y+sin(this.vel.heading()+angle)*5
+      dist += 5
       for (var j = objects.length - 1; j >= 0; j--) {
         if(curr.x > objects[j].points[0][0] && curr.x < objects[j].points[1][0] && 
           curr.y > objects[j].points[0][1] && curr.y < objects[j].points[1][1])
         {
           hit = true;
-       
+          break
         }
-
         if(curr.x > objects[j].points[1][0] && curr.x < objects[j].points[0][0] && 
           curr.y > objects[j].points[1][1] && curr.y < objects[j].points[0][1])
         {
           hit = true;
+          break
         }
+        if(curr.x > objects[j].points[0][0] && curr.x < objects[j].points[1][0] && 
+          curr.y < objects[j].points[0][1] && curr.y > objects[j].points[1][1])
+        {
+          hit = true;
+          break
+       
+        }
+        if(curr.x > objects[j].points[1][0] && curr.x < objects[j].points[0][0] && 
+          curr.y < objects[j].points[1][1] && curr.y > objects[j].points[0][1])
+        {
+          hit = true;
+          break;
+        }
+
       }
-      curr.x = curr.x+cos(this.vel.heading()+angle)*.1
-      curr.y = curr.y+sin(this.vel.heading()+angle)*.1
-      dist += .1
+      
     }
 
     return dist
@@ -204,11 +255,7 @@ function Rocket()
 
     angle = PI/2+PI/6
     
-    while(angle> PI/2-PI/6)
-    {
-    line(this.pos.x, this.pos.y, this.pos.x+cos(this.vel.heading()+angle)*300,this.pos.y+sin(this.vel.heading()+angle)*300)
-    angle-=.1
-    }
+    
     push();
     fill(this.color);
     translate(this.pos.x,this.pos.y);
@@ -228,7 +275,7 @@ function block([[a,b],[c,d]])
   this.pos = createVector(a,b);
   this.vel = createVector(0,0);
   this.acc = createVector(0,0);
-  this.color = "red"
+  this.color = "green"
 
   this.update = function() {
 

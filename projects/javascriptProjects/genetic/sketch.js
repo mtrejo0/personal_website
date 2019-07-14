@@ -7,15 +7,17 @@ var numMoves = 200;
 var num = 100;
 var genNum = 0;
 var objects = [];
-
+var drawingBox;
+var tempShape;
+var stars = []
 var startPoint;
 var endPoint;
 function setup() {
   // put setup code here
   //frameRate(30);
-  createCanvas(windowWidth -5 , windowHeight -5);
- 
-  goal = [windowWidth-100,windowHeight/2,20];
+  createCanvas(windowWidth, windowHeight);
+  
+  goal = [windowWidth-100,windowHeight/2,windowHeight * windowWidth/30000];
   time = 0;
   origin = createVector(50,windowHeight/2);
 
@@ -24,23 +26,37 @@ function setup() {
   }
   startPoint = createVector();
   endPoint = createVector();
+  drawingBox = false;
+
+  for (var i = 70; i >= 0; i--) {
+    stars.push([random(0,windowWidth),random(0,windowHeight)])
+  }
+
 
 
 }
 
 function draw() {
+  origin = createVector(50,windowHeight/2);
+  goal = [windowWidth-100,windowHeight/2,windowHeight * windowWidth/30000];
+
+  createCanvas(windowWidth -5 , windowHeight -5);
   background('black');
   textSize(20);
   fill(255);
   text("Generation: "+ genNum,10,30);
+  for (var i = stars.length - 1; i >= 0; i--) {
+    fill("white")
+    ellipse(stars[i][0],stars[i][1],1,1)
+  }
 
   
   
   if(time < numMoves){
     for (var i = rockets.length - 1; i >= 0; i--) {
-    rockets[i].update();
+    if(!drawingBox)   rockets[i].update();
     rockets[i].display();
-    //console.log(rockets[i].fitness);
+    
     }
     time++;
   }
@@ -51,15 +67,26 @@ function draw() {
   }
   
 
- 
-  //rect(200,windowHeight/2-100,10,200);
-
+  noStroke()
+  fill("orange")
   ellipse(goal[0],goal[1],goal[2],goal[2]);
+  fill("blue")
+  ellipse(origin.x,origin.y,goal[2],goal[2]);
+  
+
+ 
 
   for (var i = objects.length - 1; i >= 0; i--) {
     rectMode(CORNERS);
     fill("white");
     rect(objects[i][0][0],objects[i][0][1],objects[i][1][0],objects[i][1][1])
+  }
+
+  if(drawingBox)
+  {
+    fill("white")
+    rectMode(CORNERS)
+    rect(tempShape[0],tempShape[1],mouseX,mouseY);
   }
   
 
@@ -71,14 +98,16 @@ function draw() {
 function mousePressed()
 {
   startPoint = [mouseX,mouseY];
-  noLoop();
+  drawingBox = true
+  tempShape = [mouseX,mouseY]
+  // noLoop();
 }
 function mouseReleased()
 {
   endPoint = [mouseX,mouseY];
-
+  drawingBox = false
   objects.push([startPoint,endPoint])
-  loop();
+  // loop();
 }
 
 
@@ -186,8 +215,10 @@ function Rocket()
 
   this.fitness = -Infinity;
   this.index = 0;
-  this.color = "white";
+  
+  this.color = random(100,255);
   this.time = -Infinity;
+  this.size = windowHeight * windowWidth/100000
 
   for (var i = numMoves; i >= 0; i--) {
     var x = random(-1,1);
@@ -201,6 +232,7 @@ function Rocket()
 
   
 	this.update = function() {
+    this.size = windowHeight * windowWidth/100000
     if(!this.win && !this.lose){
       this.vel.add(this.acc);
       this.pos.add(this.vel);
@@ -217,10 +249,10 @@ function Rocket()
         this.win = true;
         this.time = this.index;
       }
-      if(this.pos.x<0 || this.pos.x>windowWidth || this.pos.y<0 || this.pos.y>windowHeight)
-      {
-        this.lose = true;
-      }
+      // if(this.pos.x<0 || this.pos.x>windowWidth || this.pos.y<0 || this.pos.y>windowHeight)
+      // {
+      //   this.lose = true;
+      // }
 
       for (var j = objects.length - 1; j >= 0; j--) {
 
@@ -287,14 +319,15 @@ function Rocket()
 
   this.display = function() {
     push();
+    // colorMode(HSB, 100);
     fill(this.color);
     translate(this.pos.x,this.pos.y);
     rotate(this.vel.heading())
   	
     beginShape();
-    vertex(10, 0);
-    vertex(-10, -5);
-    vertex(-10, 5);
+    vertex(this.size, 0);
+    vertex(-this.size, -this.size/2);
+    vertex(-this.size, this.size/2);
     endShape(CLOSE);
 
     pop();

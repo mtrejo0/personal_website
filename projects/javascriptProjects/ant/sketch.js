@@ -12,8 +12,8 @@ var step;
 
 function setup() {
   
-  createCanvas(windowWidth-10,windowHeight-10);
-  size =10;
+  createCanvas(windowWidth,windowHeight);
+  size =windowHeight/80;
   loop = true;
   step = 0;
   h = (windowHeight-10)/size|0;

@@ -9,32 +9,12 @@ function setup() {
   width = windowHeight;
   createCanvas(windowWidth , windowHeight);
   for (var i = n; i >= 0; i--) {
-    items.push(new Bar(i,i/n*windowHeight));
+    items.push(new Bar(i,i/n));
   }
-
   randomize(items);
-
-  /*def insertion_sort(A):
-  #Insertion sort array A
-  for i in range(1, len(A)): # O(n) loop over array
-    for j in range(i, 0, -1): # O(i) loop over sub-array
-      if A[j - 1] <= A[j]: # O(1) check if swap needed
-        break # O(1) no swap needed
-      A[j - 1], A[j] = A[j], A[j - 1] # O(1) swap*/
-
     index = 0;
 
-    /*for (var i = 1; i < items.length; i++) {
-      for (var j = i; j >0; j--) {
-        if(items[j-1].height<=items[j].height)
-        {
-          break;
-        }
-        var temp = items[j-1].height;
-        items[j-1].height = items[j].height;
-        items[j].height = temp;
-    }  
-  }*/
+  
 
 }
 
@@ -44,6 +24,7 @@ function setup() {
 
 function draw() {
   // put drawing code here
+  createCanvas(windowWidth , windowHeight);
   if(index<items.length)
   {
     for (var j = index; j >0; j--) {
@@ -57,10 +38,7 @@ function draw() {
     }
   }
   index++;
-  if(index>=items.length)
-  {
-    noLoop();
-  }
+  
   noStroke();
 
 
@@ -88,9 +66,9 @@ function Bar(pos,height)
   this.display = function ()
   {
     colorMode(HSB,100);
-    fill(this.height/500*100,100,100);
+    fill(map(this.height*windowHeight,0,windowHeight,0,100),100,100);
     rectMode(CORNERS);
-    rect(width/n*this.pos,length, width/n*this.pos+width/n,this.height);
+    rect(windowWidth/n*this.pos,windowHeight, windowWidth/n*this.pos+windowWidth/n,this.height*windowHeight);
   }
 
 

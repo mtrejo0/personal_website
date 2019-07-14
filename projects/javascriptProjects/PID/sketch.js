@@ -11,7 +11,7 @@ var reset;
 
 function setup() {
   // put setup code here
- createCanvas(windowWidth-10,windowHeight-10);
+ createCanvas(windowWidth,windowHeight);
  racer = new Rocket();
  goal = windowHeight/2
 
@@ -46,7 +46,7 @@ function resetF()
   racer.kP = 1/1000
   racer.kD = 1/10000
   racer.kI = 1/100000
-  racer.pos = createVector(0,windowHeight-50);
+  racer.pos = createVector(0,windowHeight*5/6);
   racer.vel = createVector(2,0);
   racer.acc = createVector(0,0);
   positions = []
@@ -61,8 +61,8 @@ function mousePressed()
 
 
 function draw() {
-
-
+  createCanvas(windowWidth,windowHeight);
+  
 
  
   background("white")
@@ -70,10 +70,32 @@ function draw() {
   racer.display();
   line(0,goal,windowWidth,goal)
 
+  if(windowWidth > 900){
   text("Error: " + racer.pError, 700, 35)
   text("kP",60,35)
   text("kD",270 ,35)
   text("kI",480,35)
+  inKp.position(100,25);
+  inKd.position(300,25);
+  inKi.position(500,25);
+  reset.position(windowWidth-100,40);
+
+  }
+  else
+  {
+
+    text("Error: " + racer.pError, 60, 140)
+    text("kP",60,35)
+    text("kD",60 ,70)
+    text("kI",60,105)
+    reset.position(windowWidth-100,140);
+
+    inKp.position(100,25);
+  inKd.position(100,60);
+  inKi.position(100,95);
+
+
+  }
   if(time%1==0){
   positions.push([racer.pos.x,racer.pos.y])}
   past = null
@@ -98,7 +120,7 @@ function draw() {
 
 function Rocket()
 {
-  this.pos = createVector(0,windowHeight-50);
+  this.pos = createVector(0,windowHeight*5/6);
   this.init = 0
   this.vel = createVector(2,0);
   this.acc = createVector(0,0);
@@ -123,6 +145,8 @@ function Rocket()
       D = this.time*this.kD*(error-this.pError)
 
       this.acc = createVector(0,1).mult( P+I+D)
+
+      
       this.pError = error;
   }
   
@@ -160,7 +184,16 @@ function Rocket()
     translate(this.pos.x,this.pos.y);
     rotate(this.vel.heading())
     rectMode(CENTER)
-    rect(0,0,20,10)
+    size = 0;
+    if(windowWidth<700)
+    {
+      size = 10;
+    }
+    else
+    {
+      size = 20
+    }
+    rect(0,0,size,size/2)
 
     pop();
   };

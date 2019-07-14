@@ -10,7 +10,7 @@ var correct = true;
 
 function setup() {
   // put setup code here
-  createCanvas(windowWidth-10,windowHeight-10);
+  createCanvas(windowWidth,windowHeight);
   input = createInput();
   input.position(windowWidth/2,windowHeight/2-115 );
   text("Input Number",windowWidth/2-200,windowHeight/2-100);
@@ -101,6 +101,7 @@ function calculate()
 
 function draw()
 {
+  createCanvas(windowWidth,windowHeight);
   background(255);
   text(output,windowWidth/2,windowHeight/2+65);
 
